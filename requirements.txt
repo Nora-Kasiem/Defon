@@ -1,7 +1,10 @@
 streamlit 
 opencv-python 
 tensorflow 
-keras 
+# keras 
 scikit-image
 transformers
 streamlit-audiorec
+tf-keras
+sentencepiece
+sacremoses
