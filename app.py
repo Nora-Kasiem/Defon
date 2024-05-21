@@ -3,11 +3,9 @@ from st_audiorec import st_audiorec
 from transformers import pipeline
 from keras.models import load_model
 import numpy as np
-from skimage import transform
+# from skimage import transform
 from PIL import Image
 from transformers import pipeline
-
-
 
 
 # Page Config
@@ -89,7 +87,7 @@ with t1: # Text Input
     
     if intext is not None:
         with st.chat_message("assistant"):
-            temp = translating(st.session_state["input_text"], src, dest)
+            temp = translating(intext, src, dest)
             st.markdown(temp)
 
 
@@ -99,9 +97,9 @@ with t2: # Audio Input
     with st.chat_message("assistant"):
         
         if wav_audio_data is not None:
-            # pipe = pipeline("automatic-speech-recognition", model="openai/whisper-large-v3")
+            pipe = audio_text()
             # autext = pipe(wav_audio_data, generate_kwargs={"task": "transcribe"}) #, "language": dest})
-            text = audio_text()(wav_audio_data, generate_kwargs={"task": "translate", "language": dest})
+            text = pipe(wav_audio_data, generate_kwargs={"task": "translate", "language": dest})
             st.markdown(text)
 
 with t3: # Images Input
@@ -113,14 +111,20 @@ with t3: # Images Input
             st.image(st.session_state["file_uploader"])
             
             string, letter = "", ""
+            m = loading()
             
             for i in files:
                 img = np.array(Image.open(i))
                 # resized = transform.resize(img, (64, 64, 3))
                 rescaled = img/255
+                # reshaped = np.reshape(rescaled, (64, 64, 3))
+                img = np.expand_dims(rescaled, 2)
+                n2  = np.resize(img, (7, 64, 64, 3))
+                # img = np.expand_dims(n2,0)
+                # img.shape[2] = 3
+                # expnaded = np.expand_dims(img, 0)
                 
-                
-                yhat = loading()(rescaled)
+                yhat = m(n2)
 
                 st.markdown(yhat)
             # st.markdown(st.session_state["file_uploader"])
