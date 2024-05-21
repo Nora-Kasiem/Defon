@@ -6,5 +6,8 @@ scikit-image
 transformers
 streamlit-audiorec
 tf-keras
+<<<<<<< HEAD
 sentencepiece
 sacremoses
+=======
+>>>>>>> 655e283b9f91847fae739a2aa506ef978908322b

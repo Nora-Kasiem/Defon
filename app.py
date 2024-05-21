@@ -109,7 +109,7 @@ with t3: # Images Input
             for i in files:
                 img = np.array(Image.open(i))
                 resized = transform.resize(img, (64, 64, 3))
-                rescaled = transform.rescale(resized/255)
+                rescaled = transform.rescale(resized, (1./255))
                 
                 
                 yhat = model.predict(rescaled)
