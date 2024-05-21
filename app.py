@@ -120,7 +120,7 @@ with t3: # Images Input
                 rescaled = img/255
                 
                 
-                yhat = loading().predict(rescaled)
+                yhat = loading()(rescaled)
 
                 st.markdown(yhat)
             # st.markdown(st.session_state["file_uploader"])
