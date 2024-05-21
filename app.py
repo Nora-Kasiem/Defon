@@ -65,11 +65,21 @@ labels = {0: 'ع',
 src = languages[st.session_state["from_lang"]]
 dest = languages[st.session_state["to_lang"]]
 
+@st.cache_resource
 def translating(text, src, dest):
     translator = pipeline("translation", model=f"Helsinki-NLP/opus-mt-{src}-{dest}")
     output = translator(text)[0]['translation_text']
     return output
 
+@st.cache_resource
+def loading():
+    model = load_model("arsl_cnn_model.h5")
+    return model
+
+@st.cache_resource
+def audio_text():
+    pipe = pipeline("automatic-speech-recognition", model="openai/whisper-large-v3")
+    return pipe
 
 types = ["Text", "Microphone", "Camera"]
 t1, t2, t3 = st.tabs(types)
@@ -89,9 +99,9 @@ with t2: # Audio Input
     with st.chat_message("assistant"):
         
         if wav_audio_data is not None:
-            pipe = pipeline("automatic-speech-recognition", model="openai/whisper-large-v3")
+            # pipe = pipeline("automatic-speech-recognition", model="openai/whisper-large-v3")
             # autext = pipe(wav_audio_data, generate_kwargs={"task": "transcribe"}) #, "language": dest})
-            text = pipe(wav_audio_data, generate_kwargs={"task": "translate", "language": dest})
+            text = audio_text()(wav_audio_data, generate_kwargs={"task": "translate", "language": dest})
             st.markdown(text)
 
 with t3: # Images Input
@@ -104,15 +114,13 @@ with t3: # Images Input
             
             string, letter = "", ""
             
-            model = load_model("arsl_cnn_model.h5")
-            
             for i in files:
                 img = np.array(Image.open(i))
                 # resized = transform.resize(img, (64, 64, 3))
                 rescaled = img/255
                 
                 
-                yhat = model.predict(rescaled)
+                yhat = loading().predict(rescaled)
 
                 st.markdown(yhat)
             # st.markdown(st.session_state["file_uploader"])
