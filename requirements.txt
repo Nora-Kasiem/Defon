@@ -5,3 +5,4 @@ keras
 scikit-image
 transformers
 streamlit-audiorec
+tf-keras
