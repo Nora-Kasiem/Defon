@@ -1,5 +1,5 @@
 streamlit 
-pyhton3-opencv
+python3-opencv
 opencv-python 
 tensorflow  
 scikit-image
