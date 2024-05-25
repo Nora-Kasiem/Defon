@@ -6,4 +6,5 @@ streamlit-audiorec
 tf-keras
 sentencepiece
 sacremoses
-opencv-python-headless==4.5.3.56
+numpy
+opencv-python-headless

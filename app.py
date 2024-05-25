@@ -4,7 +4,7 @@ import tensorflow as tf
 import numpy as np
 from PIL import Image, ImageOps
 from transformers import pipeline
-import cv2
+# import cv2
 
 # Page Config
 st.set_page_config(page_title="Deafon", page_icon="logo.png", layout="wide")
@@ -69,12 +69,20 @@ def translating(text, src, dest):
 
 
 def import_and_predict(image_data, model):
-        size = (224, 224)    
-        image = ImageOps.fit(image_data, size, Image.ANTIALIAS)
+        size = (224, 224)
+        image = Image.open(image_data)
+        image = image.resize(size, Image.LANCZOS) 
+
+        # img = np.expand_dims(img, 0)   
+        # image = ImageOps.fit(image_data, size, Image.LANCZOS)
         image = np.asarray(image)
-        img = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)       
-        img_reshape = img[np.newaxis,...]
-        prediction = model.predict(img_reshape)
+        # img = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+
+        img = image[...,::-1]  
+         
+        img = np.expand_dims(image, 0)
+
+        prediction = model.predict(img)
         return prediction
 
 
@@ -122,22 +130,16 @@ with t3: # Images Input
         
         string, letter = "", ""
 
-        # with st.spinner('Loading Model ...'):
-        #     model = run_model(src)
-
+        with st.spinner('Loading Model ...'):
+            model = run_model(src)
         
-        #     for image in files:
-
-        #         image = Image.open(image)
-        #         resized_image = image.resize((244, 244), Image.ANTIALIAS)
+            for image in files:
                 
-        #         predictions = import_and_predict(image, model)
+                predictions = import_and_predict(image, model)
                 
-        #         score = score = tf.nn.softmax(predictions[0])
-
-        #         predicted_class_index = np.argmax(score)
-        #         predicted_class_name = labels[predicted_class_index]
+                predicted_class_index = np.argmax(predictions[0])
+                predicted_class_name = labels[predicted_class_index]
                 
-        #         st.write(f"""## Predicted Letter : {predicted_class_name}""")
+                st.write(f"""## Predicted Letter : {predicted_class_name}""")
     
 
