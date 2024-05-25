@@ -4,7 +4,7 @@ import tensorflow as tf
 import numpy as np
 from PIL import Image, ImageOps
 from transformers import pipeline
-# import cv2
+import cv2
 
 # Page Config
 st.set_page_config(page_title="Deafon", page_icon="logo.png", layout="wide")
@@ -76,9 +76,9 @@ def import_and_predict(image_data, model):
         # img = np.expand_dims(img, 0)   
         # image = ImageOps.fit(image_data, size, Image.LANCZOS)
         image = np.asarray(image)
-        # img = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+        img = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
-        img = image[...,::-1]  
+        # img = image[...,::-1]  
          
         img = np.expand_dims(image, 0)
 
