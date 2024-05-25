@@ -75,8 +75,8 @@ def import_and_predict(image_data, model):
 
         # img = np.expand_dims(img, 0)   
         # image = ImageOps.fit(image_data, size, Image.LANCZOS)
-        image = np.asarray(image)
-        img = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+        # image = np.asarray(image)
+        # img = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
         # img = image[...,::-1]  
          
